@@ -1,5 +1,6 @@
 @extends('frontend.product_template')
 @section('content')
+	
 	<!-- breadcrumb -->
 	<div class="bread-crumb bgwhite flex-w p-l-52 p-r-15 p-t-30 p-l-15-sm">
 		<a href="index.html" class="s-text16">
@@ -69,17 +70,11 @@
 
 						<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 							<select class="selection-2 size" name="size">
-								@php
-								$size=$item->size_id;
-								$size_array=explode(',',$size);
-								@endphp
-
-								@foreach($size_array as $sarray)
-
-								<option value="{{$sarray}}">{{$sarray}}</option>
+								
+								@foreach($item->sizes as $size)
+								<option value="$size->pivot->size_id">{{$size->size}}</option>
 
 								@endforeach
-
 							</select>
 						</div>
 					</div>
@@ -92,10 +87,10 @@
 						<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 							<select class="selection-2" name="color">
 								<option>Choose an option</option>
-								<option>Gray</option>
-								<option>Red</option>
-								<option>Black</option>
-								<option>Blue</option>
+								@foreach($item->colors as $color)
+								<option value="$color->pivot->color_id">{{$color->color}}</option>
+
+								@endforeach
 							</select>
 						</div>
 					</div>

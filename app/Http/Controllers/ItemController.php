@@ -37,7 +37,8 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     { 
-        $request->validate([
+        //dd($request);
+            $request->validate([
             "item_name" => "required|min:3|max:150",
             "item_price" => "required|min:1|max:20",
             "category" => "required",
@@ -59,24 +60,25 @@ class ItemController extends Controller
         else{
             $discount_price = null;
         }
-        if ($request->size_id) {
-            $size_id = $request->size_id;
-            $size = implode(',', $size_id);
-        }
-        else{
-            $size = null;
-        }
+       
         $item = Item::Create([
             'id'       => $request->item_id,
             'category_id' => $request->category,
-            'size_id' => $size,
             'user_id'   => 1,
             'item_name' => $request->item_name,
             'item_price'=> $request->item_price,
             'discount_price'=> $discount_price,
             'item_image'=> json_encode($image_array),
             'description'=> $request->description,
+
+
         ]);
+         if ($request->size_id) {
+            $item->sizes()->attach($request->size_id);
+        }
+         if ($request->color_id) {
+            $item->colors()->attach($request->color_id);
+        }
      return response()->json(['success' => 'Item saved Successfully']);
     }
 
@@ -99,9 +101,13 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
+
         $item = Item::find($id);
+        $itemsize=$item->sizes()->get();
+        $itemcolor=$item->colors()->get();
+        //dd($itemcolor);
         return response()->json([
-            'item' => $item,
+            'item' => $item,'item_size'=>$itemsize,'item_color'=>$itemcolor
                     ]);
     }
 
@@ -114,7 +120,7 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        //dd($request);
         $request->validate([
             "edit_item_name" => "required|min:3|max:151",
             "edit_item_price" => "required|min:1|max:151",
@@ -122,23 +128,54 @@ class ItemController extends Controller
               
         ]);
         // dd($request);
-         $image = $request->file('edit_item_image');
+         $image = $request->file('edititem_image');
         if($image){
-            $name=uniqid().time().'.'.$image->getClientOriginalExtension();
-            $image->move(public_path('image/profile'),$name);
-            $path='image/profile/'.$name;
+                foreach ($image as $image_item) {
+                    $name=uniqid().time().'.'.$image_item->getClientOriginalExtension();
+                    $image_item->move(public_path('image/item'),$name);
+                    $path='image/item/'.$name;
+                    $image_array[]=$path;
+                }
+            
         }
         else{
             $path = $request->item_old_image;
         }
 
+        if ($request->edit_discount) {
+            $discount_price = $request->edit_discount;
+        }
+        else{
+            $discount_price = null;
+        }
         $item = Item::find($id);
         $item->item_name = $request->edit_item_name;
         $item->item_price = $request->edit_item_price;
+        $item->discount_price= $discount_price;
+        if($image){
+        $item->item_image=json_encode($image_array);
+        }else{
         $item->item_image = $path;
-        $item->brand_id = $request->edit_brand;
-        $item->category_id = $request->edit_category;
+
+        }
+        //$item->brand_id = $request->edit_brand;
+        $item->category_id = $request->category;
         $item->save();
+
+        if ($request->size_id) {
+          $item->sizes()->detach();
+        $item->sizes()->attach($request->size_id);
+        }else{
+          $item->sizes()->detach();  
+        }
+         if ($request->color_id) {
+          $item->colors()->detach();
+            $item->colors()->attach($request->color_id);  
+        }else{
+          $item->colors()->detach();  
+        }
+
+
         return response()->json(['success'=>'item Updated successfully.']);
 
         

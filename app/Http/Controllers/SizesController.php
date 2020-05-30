@@ -120,6 +120,20 @@ class SizesController extends Controller
             ->select('sizes.*', 'categories.*', 'sizes.id as s_id')
             ->where('sizes.category_id', '=', $id)
             ->get();
+           // dd($size);
         return $size;
     }
+
+    public function getcolorByCategoryId($id)
+    {
+        $color = DB::table('colors')
+            ->join('categories', 'categories.id', '=', 'colors.category_id')
+            ->select('colors.*', 'categories.*', 'colors.id as c_id')
+            ->where('colors.category_id', '=', $id)
+            ->get();
+           // dd($size);
+        return $color;
+    }
+
+   
 }

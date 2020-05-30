@@ -80,7 +80,7 @@
 								</div>
 								<div class="form-group">
 									<label for="type">Category </label>
-									<select name="category" class="form-control" id="category">
+									<select name="category" class="form-control selectcategory" id="category">
 										<option>Choose Category</option>
 										@foreach($categories as $category)
 										<option value="{{$category->id}}">{{$category->category_name}}</option>
@@ -89,11 +89,25 @@
 										<p class="error-message-item_category p-2 text-md-left text-danger"></p>
 								</div>
 								<div class="form-group">
-									<div class="form-group row"  id="size_field">
+								<div class="sc" >
+
+									<nav>
+										<div class="nav nav-tabs" id="nav-tab" role="tablist">
+											<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">sizes</a>
+											<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">colors</a>
+											
+										</div>
+									</nav>
+									<div class="tab-content" id="nav-tabContent">
+										<div class="tab-pane fade show active ss" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"></div>
+										<div class="tab-pane fade cc" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"></div>
+
+									</div>	
 										
-									</div>
 								</div>
-								<div class="form-group">
+								
+								</div>
+								<div class="form-group my-4">
 									<label for="type">Item Image</label>
 									<input type="file" class="form-control @error('item') is-invalid @enderror" id="item_image" name="item_image[]" multiple>
 										<p class="error-message-item_image p-2 text-md-left text-danger"></p>
@@ -143,41 +157,74 @@
 	                </div>
 	                <div class="form-group row">
 	                  <label for="edit_phone_no" class="col-md-4 col-form-label text-md-right">Item Price</label>
-	                  <div class="col-md-6">
+	                  <div class="col-md-4">
 	                    <input type="number" class="form-control @error('edit_item_price') is-invalid @enderror" id="edit_item_price" name="edit_item_price" autofocus required>
 	                      <p class="error-message-edit-phone_no p-2 text-md-left text-danger"></p>
 	                  </div>
+	                  <div class="col-md-4"><input type="text" name="edit_discount" placeholder="discount_price" class="form-control edit_discount" value=""></div>
 	                </div>
 	                
 	                <div class="form-group row">
-	                  <label for="edit_item_image" class="col-md-4 col-form-label text-md-right">{{ __('Item Picture') }}</label>
+	                  <label for="edit_item_image" class="col-md-4 col-form-label text-md-right">{{ __('new item pictures') }}</label>
 
 	                  <div class="col-md-6">
-	                      <input type="hidden" name="item_old_image" id="item_old_image">
-	                      <input id="edit_item_image" type="file" class="form-control @error('edit_item_image') is-invalid @enderror" name="edit_item_image" value="{{ old('edit_item_image') }}" autocomplete="edit_image" autofocus>
+	                      
+
+	                      <input type="file" class="form-control @error('item') is-invalid @enderror" id="edititem_image" name="edititem_image[]" multiple>
+	                     
 	                      <p class="edit-error-message-image p-2 text-md-left text-danger"></p>
-	                      <img class="item_old_image img-fluid pt-2" style="width: 50px">
 	                  </div>
 	                </div>
-	                
-					<div class="form-group row">
-						<label for="edit_category" class="col-md-4 col-form-label text-md-right">Category </label>
-						<div class="col-md-6">
-							<select name="edit_category" class="form-control" id="edit_category">
-							<option>Choose Brand</option>
-							@foreach($categories as $category)
-							<option value="{{$category->id}}">{{$category->category_name}}</option>
-							@endforeach
-						</select>
-						<p class="error-message-item_brand p-2 text-md-left text-danger"></p>
-						</div>
-		
-					</div> 
 
-	                
-	              </div> 
-	              </div>
-	            </div>
+	                 <div class="form-group row">
+	                  <label for="edit_item_image" class="col-md-4 col-form-label text-md-right">{{ __('old_images') }}</label>
+	                  <div class="col-md-6">
+	                  		<input type="hidden" name="item_old_image" id="item_old_image" value="">
+
+	                  		<div class="row item_old_image my-2 mx-3">
+	                      	
+	                      </div>
+	                  </div>
+	              	</div>
+
+
+	                <div class="form-group row">
+	                  <label for="edit_category" class="col-md-4 col-form-label text-md-right">{{ __('category') }}</label>
+
+	                  <div class="col-md-6">
+	                     <select name="category" class="form-control selectcategory" id="edit_category">
+										<option>Choose Category</option>
+										@foreach($categories as $category)
+										<option value="{{$category->id}}">{{$category->category_name}}</option>
+										@endforeach
+									</select>
+								
+	                  </div>
+	                </div>
+
+	                <div class="form-group row">
+	                	<div class="edit_sc" style="margin-left: 200px">
+	                		
+	                		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+	                			<li class="nav-item" role="presentation">
+	                				<a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">szes</a>
+	                			</li>
+	                			<li class="nav-item" role="presentation">
+	                				<a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">colors</a>
+	                			</li>
+	                			
+	                		</ul>
+	                		<div class="tab-content" id="pills-tabContent">
+	                			<div class="tab-pane fade show active edit_ss" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"></div>
+	                			<div class="tab-pane fade edit_cc" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"></div>
+	                		</div>
+
+	                	</div>
+	                </div>
+
+	               </div>
+				</div>
+			</div>
 	          <div class="modal-footer">
 	            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 	            <button type="submit" class="btn btn-primary save" name="button" id="editSaveBtn"><i class="fas fa-save"></i></button>
@@ -193,6 +240,10 @@
 @section('script')
 <script type="text/javascript">
 	$(document).ready(function(){
+		$(".sc").hide();
+		$(".edit_sc").hide();
+		$(".sizebycat").hide();
+		$(".colorbycat").hide();
 		getItem()
 		var myStopTimer = setInterval(Timer,3000);
 		$.ajaxSetup({
@@ -209,8 +260,20 @@
 		$("#category").change(function (argument) {
 			var category_id = $(this).val();
 			console.log(category_id);
-			getSizeByCategoryId(category_id);
+			$(".sc").show();
+			 getSizeByCategoryId(category_id);
+			 getcolorByCategoryId(category_id);
 		})
+
+		$("#edit_category").change(function (argument) {
+			var category_id = $(this).val();
+			console.log(category_id);
+			$(".edit_sc").show();
+			 getSizeByCategoryId(category_id);
+			 getcolorByCategoryId(category_id);
+		})
+
+	
 		function getSizeByCategoryId(category_id){
 			console.log(category_id)
 	      var url="{{route('admin.get_size_by_id',':id')}}";
@@ -225,16 +288,55 @@
 	            var html='';
 	            console.log(data)
 	            $.each(data,function(i,v){
-	              html+=`<div class="col-md-4">
-							 <div class="form-group form-check">			 	
-							    <input type="checkbox" class="form-check-input" id="exampleCheck1" value="${v.s_id}" name="size_id[]" multiple>
-							    <label class="form-check-label" for="exampleCheck1">${v.size}</label>
-							  </div>
-						</div>`;
+	              html+=`
+	              <div class="row">
+	              <div class="col-md-4 col-lg-3 col-sm-4">
+	              	<input type="checkbox" class="form-check-input" id="exampleCheck1" value="${v.s_id}" name="size_id[]" multiple>
+					<label class="form-check-label" for="exampleCheck1">${v.size}</label>
+					</div>
+					</div>
+	              `;
 	            });
-	            console.log(html);
-	            $("#size_field").removeClass('d-none')
-	            $('#size_field').html(html);
+	           // console.log(html);
+	           // $(".size_field").removeClass('d-none')
+	            $('.ss').html(html);
+	            $('.edit_ss').html(html);
+	           	
+
+	          },
+	          error: function(error){
+	            console.log(error)
+	          }
+	      });  
+    }
+    function getcolorByCategoryId(category_id){
+			console.log(category_id)
+	      var url="{{route('admin.get_color_by_id',':id')}}";
+	      url=url.replace(':id',category_id);
+	        $.ajax({
+	          type:'post',
+	          url: url,
+	          processData: false,
+	          contentType: false,
+	          success: (data) => {
+	            var j=1;
+	            var html='';
+	            console.log(data)
+	            $.each(data,function(i,v){
+	              html+=`
+	              <div class="row">
+	              <div class="col-md-4 col-lg-3 col-sm-4">
+	              	<input type="checkbox" class="form-check-input edit_color_id" id="exampleCheck1" value="${v.c_id}" name="color_id[]" multiple>
+					<label class="form-check-label" for="exampleCheck1">${v.color}</label>
+					</div>
+					</div>
+	              `;
+	            });
+	           // console.log(html);
+	           // $(".size_field").removeClass('d-none')
+	            $('.cc').html(html);
+	            $('.edit_cc').html(html);
+	            
 	          },
 	          error: function(error){
 	            console.log(error)
@@ -272,6 +374,9 @@
 			});
 		}
 
+		
+
+
 		$('#createItem').click(function (){
 			clearInterval(myStopTimer)
 			$('#saveBtn').text("Save");
@@ -285,6 +390,10 @@
 		$('#itemForm').submit(function (e){
 			e.preventDefault();
 			var formData = new FormData(this);
+			for (var pair of formData.entries())
+	          {
+	           console.log(pair[0]+ ', '+ pair[1]); 
+	          }
 			$.ajax({
 				data: formData,
 				url: "{{route('admin.item.store')}}",
@@ -323,6 +432,7 @@
 		});
 
 	$('tbody').on('click', '.editItem', function () {
+
       $('.alertMessage').addClass('d-none');
       var item_id = $(this).data('id');
       var url="{{route('admin.item.edit',':id')}}";
@@ -332,21 +442,44 @@
           type: "GET",
           dataType: 'json',
           success: function (response) {
-            var data = response.item
-            var brands = response.brands
+          	//dd(response);
+          	console.log(response);
+            var data = response.item;
+            var itemsize=response.item_size;
+            var itemcolor=response.item_color;
+            var img=JSON.parse(data.item_image);
+            //console.log(typeof(img));
+            //var brands = response.brands
+            var html='';
+            $.each(img,function(i,v){
+            	//console.log(v);
+            	html+=`
+            	 <div class="col-md-3 col-lg-3 clo-sm-2">
+            	 <img src="{{asset('${v}')}}" class="img-fluid" width="30px" height="30px">
+            	 </div>`;
 
-            console.log(brands);
+           // $('.item_old_image').attr('src',`{{asset('${data.item_image}')}}`);
+            })
+            $(".item_old_image").html(html);
+
+            //console.log(brands);
               $('#edit_modelHeading').html("Edit Item");
               $('#editSaveBtn').text("Update");
               $('#editItemModal').modal('show');
+            	$(".edit_sc").show();
+            	getSizeByCategoryId(data.category_id);
+            	getcolorByCategoryId(data.category_id);
               $('#edit_item_id').val(data.id);
               $('#edit_item_name').val(data.item_name);
               $('#edit_item_price').val(data.item_price);
+              $('.edit_discount').val(data.discount_price);
               console.log(data.item_image)
               $('#item_old_image').val(data.item_image);
-              $('.item_old_image').attr('src',`{{asset('${data.item_image}')}}`);
+              
               $("#edit_brand").val(data.brand_id);
               $("#edit_category").val(data.category_id);
+              //$(".edit_color_id").val(itemsize.id);
+
           },
           error: function (error) {
           }
@@ -354,6 +487,7 @@
    })
 
 	$('#editItemForm').submit(function (e) {
+		//alert("okk");
 	        e.preventDefault();
 	        /*$(this).html('Sending..'); */
 	        var formData = new FormData(this)

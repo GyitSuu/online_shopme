@@ -10,4 +10,8 @@ class Color extends Model
     protected $fillable = [
         'category_id', 'color',
     ];
+    public function items()
+    {
+        return $this->belongsToMany('App\Item');
+    }
 }

@@ -28,11 +28,16 @@ use Illuminate\Support\Facades\Route;
 		Route::get('/get_size','SizesController@get_size')->name('get_size');
 		Route::post('/get_size_by_id/{id}','SizesController@getSizeByCategoryId')->name('get_size_by_id');
 
+		Route::post('/get_color_by_id/{id}','SizesController@getcolorByCategoryId')->name('get_color_by_id');
+
+		//Route::post('/sizeandcolor','SearchController@search')->name('sizeandcolor');
+
 		Route::resource('/color','ColorController');
 		Route::get('/get_color','ColorController@getColor')->name('get_color');
 
 		Route::resource('/delivery_fee','DeliveryFeeController');
 		Route::get('/get_delivery_fee','DeliveryFeeController@getDeliveryFee')->name('get_delivery_fee');
+
 		
 
 		Route::resource('/item','ItemController');

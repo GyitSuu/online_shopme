@@ -8,15 +8,21 @@ class Item extends Model
 {
     //
     protected $fillable = [
-        'category_id', 'size_id', 'user_id', 'item_name', 'item_price','discount_price', 'item_image', 'description'
+        'category_id',  'user_id', 'item_name', 'item_price','discount_price', 'item_image', 'description'
     ];
     public function category()
     {
         return $this->belongsTo('App\Category');
     }
-    public function size()
+   
+   public function sizes()
     {
-        return $this->belongsTo('App\Size');
+        return $this->belongsToMany('App\Size');
+    }
+
+     public function colors()
+    {
+        return $this->belongsToMany('App\Color');
     }
     
 }
