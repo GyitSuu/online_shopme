@@ -14,4 +14,8 @@ class Size extends Model
     {
         return $this->belongsTo('App\Category');
     }
+    public function items()
+    {
+        return $this->belongsToMany('App\Item');
+    }
 }
