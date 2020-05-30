@@ -1,6 +1,6 @@
 @extends('frontend.product_template')
 @section('content')
-<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(images/heading-pages-01.jpg);">
+<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(http://127.0.0.1:8000/frontend_template/images/heading-pages-01.jpg); height: 300px">
 		<h2 class="l-text2 t-center">
 			Cart
 		</h2>
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 
-			<div class="flex-w flex-sb-m p-t-25 p-b-25 bo8 p-l-35 p-r-60 p-lr-15-sm">
+			{{-- <div class="flex-w flex-sb-m p-t-25 p-b-25 bo8 p-l-35 p-r-60 p-lr-15-sm">
 				<div class="flex-w flex-m w-full-sm">
 					<div class="size11 bo4 m-r-10">
 						<input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="coupon-code" placeholder="Coupon Code">
@@ -53,7 +53,7 @@
 						Update Cart
 					</button>
 				</div>
-			</div>
+			</div> --}}
 
 			<!-- Total -->
 			<div class="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 m-r-0 m-l-auto p-lr-15-sm">
@@ -80,7 +80,7 @@
 
 					<div class="w-size20 w-full-sm">
 						<p class="s-text8 p-b-23">
-							There are no shipping methods available. Please double check your address, or contact us if you need any help.
+							There are shipping methods available in Mandalay Region. Please double check your address, or contact us if you need any help.
 						</p>
 
 						<span class="s-text19">
@@ -104,12 +104,12 @@
 							<input type="date" name="" placeholder="date" class="form-control orderdate s-text7">
 						</div>
 
-						<div class="size14 trans-0-4 m-b-10">
+						{{-- <div class="size14 trans-0-4 m-b-10">
 							<!-- Button -->
 							<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
 								Update Totals
 							</button>
-						</div>
+						</div> --}}
 					</div>
 				</div>
 
@@ -133,40 +133,33 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal fade authModal" id="emptyProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Unaviable Right Now</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        If you have account, please Login Here <a href="{{route('login')}}">Login</a> <br>
+
+		        If you haven't account, please Register Here <a href="{{route('register')}}">Register</a> <br>
+
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color:  #111111; border-color: #111111">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</section>
 	@endsection
 	@section('script')
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$(".township").change(function(){
-			//alert("ok");
-				var tid=$(this).val();
-				//console.log(tid);
-
-				$.ajaxSetup({
-				    headers: {
-				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				    }
-				});
-
-				$.post("/feebytownship",{tid:tid},function(res){
-					//console.log(res);
-					var defee="";
-					$.each(res,function(i,v){
-						 defee=v.fee;
-						//console.log(defee);
-
-					})
-					$(".delifee").html("Delivery fee is "+defee);
-
-					var total=$(".carttotal").html();
-					var alltotal=parseInt(defee)+parseInt(total);
-
-					$(".alltotal").html(alltotal);
-
-				})
-			})
 
 			$(".checkout").click(function(){
 				var authCheck = {{ Auth::check() }}
@@ -174,8 +167,6 @@
 				if (authCheck) {
 					var yes=confirm("Are you sure to order");
 					if(yes){
-
-						var address=$(".address").val();
 					var orderdate=$(".orderdate").val();
 					var total=parseInt($(".alltotal").html());
 
@@ -200,7 +191,7 @@
 					}
 				}
 				else{
-					alert("Login Here")
+					$(".authModal").modal('show')
 					
 				}
 				

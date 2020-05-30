@@ -27,10 +27,12 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('frontend_template/vendor/select2/select2.min.css')}}">
 <!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{asset('frontend_template/vendor/daterangepicker/daterangepicker.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('frontend_template/vendor/slick/slick.css')}}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{asset('frontend_template/vendor/noui/nouislider.min.css')}}">
 <!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{asset('frontend_template/vendor/lightbox2/css/lightbox.min.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('frontend_template/css/util.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('frontend_template/css/main.css')}}">
 <!--===============================================================================================-->
@@ -82,16 +84,12 @@
 								<a href="{{route('homepage')}}">Home</a>
 							</li>
 
-							<li>
+							<li class="sale-noti">
 								<a href="{{route('product')}}">Shop</a>
 							</li>
 
-							<li class="sale-noti">
-								<a href="product.html">Sale</a>
-							</li>
-
 							<li>
-								<a href="cart.html">Features</a>
+								<a href="{{route('cart')}}">Features</a>
 							</li>
 
 							<li>
@@ -99,11 +97,11 @@
 							</li>
 
 							<li>
-								<a href="about.html">About</a>
+								<a href="{{route('about')}}">About</a>
 							</li>
 
 							<li>
-								<a href="contact.html">Contact</a>
+								<a href="{{route('contact')}}">Contact</a>
 							</li>
 
 							@guest
@@ -116,33 +114,32 @@
                                 </li>
                             @endif
                         @else
-                        <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
+                        
 						</ul>
 					</nav>
 				</div>
 
 				<!-- Header Icon -->
 				<div class="header-icons">
-					<a href="#" class="header-wrapicon1 dis-block">
-						<img src="{{asset('frontend_template/images/icons/icon-header-01.png')}}" class="header-icon1" alt="ICON">
-					</a>
+					<li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        	<img src="{{asset(Auth::user()->image)}}" class="header-icon1 rounded-circle" alt="ICON" style="width: 40px; height: 40px">
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                    @endguest
+					
 
 					<span class="linedivide1"></span>
 
@@ -523,7 +520,7 @@
 			</div>
 		</div>
 
-		<div class="t-center p-l-15 p-r-15">
+		{{-- <div class="t-center p-l-15 p-r-15">
 			<a href="#">
 				<img class="h-size2" src="images/icons/paypal.png" alt="IMG-PAYPAL">
 			</a>
@@ -547,7 +544,7 @@
 			<div class="t-center s-text8 p-t-20">
 				Copyright © 2018 All rights reserved. | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
 			</div>
-		</div>
+		</div> --}}
 	</footer>
 
 
@@ -591,9 +588,12 @@
 <!--===============================================================================================-->
 	<script type="text/javascript" src="{{asset('frontend_template/vendor/slick/slick.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('frontend_template/js/slick-custom.js')}}"></script>
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
+	<script type="text/javascript" src="{{asset('frontend_template/vendor/vendor/countdowntime/countdowntime.js')}}"></script>
+	<!--===============================================================================================-->
+	<script type="text/javascript" src="{{asset('frontend_template/vendor/vendor/lightbox2/js/lightbox.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('frontend_template/vendor/sweetalert/sweetalert.min.js')}}"></script>
-	<script type="text/javascript">
+	{{-- <script type="text/javascript">
 		$('.block2-btn-addcart').each(function(){
 			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
 			$(this).on('click', function(){
@@ -607,7 +607,7 @@
 				swal(nameProduct, "is added to wishlist !", "success");
 			});
 		});
-	</script>
+	</script> --}}
 
 <!--===============================================================================================-->
 	<script type="text/javascript" src="{{asset('frontend_template/vendor/noui/nouislider.min.js')}}"></script>
@@ -635,6 +635,10 @@
 	    });
 	</script>
 <!--===============================================================================================-->
+	<script type="text/javascript" src="{{asset('frontend_template/vendor/parallax100/parallax100.js')}}"></script>
+	<script type="text/javascript">
+        $('.parallax100').parallax100();
+	</script>
 	<script src="{{asset('frontend_template/js/main.js')}}"></script>
 	<script type="text/javascript" src="{{asset('frontend_template/js/custom.js')}}"></script>
 	@yield('script')

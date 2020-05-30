@@ -24,7 +24,7 @@
 						<ul class="p-b-54">
 							@foreach($categories as $category)
 							<li class="p-t-4">
-								<a href="#" class="s-text13 active1">
+								<a href="javascript:void(0)" class="s-text13 active1 filter-category" data-id="{{$category->id}}">
 									{{$category->category_name}}
 								</a>
 							</li>
@@ -36,7 +36,7 @@
 							Filters
 						</h4>
 
-						<div class="filter-price p-t-22 p-b-50 bo3">
+						{{-- <div class="filter-price p-t-22 p-b-50 bo3">
 							<div class="m-text15 p-b-17">
 								Price
 							</div>
@@ -100,12 +100,12 @@
 									<label class="color-filter color-filter7" for="color-filter7"></label>
 								</li>
 							</ul>
-						</div>
+						</div> --}}
 
 						<div class="search-product pos-relative bo4 of-hidden">
-							<input class="s-text7 size6 p-l-23 p-r-50" type="text" name="search-product" placeholder="Search Products...">
+							<input class="s-text7 size6 p-l-23 p-r-50" id="search-product" type="text" name="search-product" placeholder="Search Products...">
 
-							<button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4">
+							<button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4 search">
 								<i class="fs-12 fa fa-search" aria-hidden="true"></i>
 							</button>
 						</div>
@@ -116,35 +116,34 @@
 					<!--  -->
 					<div class="flex-sb-m flex-w p-b-35">
 						<div class="flex-w">
-							<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
-								<select class="selection-2" name="sorting">
+							<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10 float-right">
+								<select class="selection-2 sorting_items" name="sorting">
 									<option>Default Sorting</option>
-									<option>Popularity</option>
+									<option value="latest">Latest</option>
+									<option value="lowToHigh">Price: low to high</option>
+									<option value="highToLow">Price: high to low</option>
+								</select>
+							</div>
+
+							{{-- <div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
+								<select class="selection-2" name="sorting">
+									<<option>Default Sorting</option>
+									<option>Latest</option>
 									<option>Price: low to high</option>
 									<option>Price: high to low</option>
-								</select>
-							</div>
-
-							<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
-								<select class="selection-2" name="sorting">
-									<option>Price</option>
-									<option>$0.00 - $50.00</option>
-									<option>$50.00 - $100.00</option>
-									<option>$100.00 - $150.00</option>
-									<option>$150.00 - $200.00</option>
-									<option>$200.00+</option>
 
 								</select>
-							</div>
-						</div>
+							</div> --}}
+						</div> 
 
-						<span class="s-text8 p-t-5 p-b-5">
+						{{-- <span class="s-text8 p-t-5 p-b-5">
 							Showing 1–12 of 16 results
-						</span>
+						</span> --}}
 					</div>
+					<!-- Filter Product -->
 
 					<!-- Product -->
-					<div class="row">
+					<div class="row mt-3 search_category" id="search_category">
 						@foreach($items as $item)
 							<div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
 								<!-- Block2 -->
@@ -164,7 +163,7 @@
 											<div class="block2-btn-addcart w-size1 trans-0-4">
 												<!-- Button -->
 												<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-													Add to Cart
+													<a href="{{route('product_detail',$item->id)}}" class="text-white">Show Detail</a>
 												</button>
 											</div>
 										</div>
@@ -193,5 +192,181 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal fade emptyProductModal" id="emptyProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Unaviable Right Now</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        There is no product right now.
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color:  #111111; border-color: #111111">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</section>
+@endsection
+@section('script')
+	<script type="text/javascript">
+		$(document).ready(function (argument) {
+			$.ajaxSetup({
+				headers:{
+					'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+				}
+			});
+
+			$('.filter-category').click(function (argument) {
+				var category_id = $(this).data('id')
+				getItemsByCategory(category_id)
+			})
+
+			function getItemsByCategory(category_id){
+		      var url="{{route('get_item_by_category',':id')}}";
+		      url=url.replace(':id',category_id);
+		        $.ajax({
+		          type:'post',
+		          url: url,
+		          processData: false,
+		          contentType: false,
+		          success: (data) => {
+		            var j=1;
+		            var html='';
+		            $.each(data,function(i,v){
+		            	console.log(data.empty)
+		            	if(data.empty == "null") {
+		            		$(".emptyProductModal").modal('show')
+		            		getItemsByCategory(0)
+		            	}else{
+
+		            	var image = JSON.parse(v.item_image)
+		            	var id = JSON.parse(v.i_id)
+		            	var url="{{route('product_detail',':id')}}";
+	      				url=url.replace(':id',id);
+		              html+=`<div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
+								<!-- Block2 -->
+								<div class="block2">
+									<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+										<img src="{{asset('${image[0]}')}}" alt="IMG-PRODUCT">
+
+										<div class="block2-overlay trans-0-4">
+											<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
+												<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+												<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+											</a>
+
+											<div class="block2-btn-addcart w-size1 trans-0-4">
+												<!-- Button -->
+												<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+													<a href="${url}" class="text-white">Show Detail</a>
+												</button>
+											</div>
+										</div>
+									</div>
+
+									<div class="block2-txt p-t-20">
+										<a href="{{route('product_detail',$item->id)}}" class="block2-name dis-block s-text3 p-b-5">
+											${v.item_name}
+										</a>
+
+										<span class="block2-price m-text6 p-r-5">
+											${v.item_price}
+											
+										</span>
+									</div>
+								</div>
+							</div>`;
+		            	}
+		            });
+		            $('#search_category').html(html);
+		          },
+		          error: function(error){
+		            console.log(error)
+		          }
+		      });  
+	    	}
+
+	    	$('.sorting_items').change(function (argument) {
+				var sort_type = $(this).val()
+				console.log(sort_type)
+				getItemsBySorting(sort_type)
+			})
+
+			function getItemsBySorting(sort_type){
+		      var url="{{route('get_item_by_sorting',':id')}}";
+		      url=url.replace(':id',sort_type);
+		        $.ajax({
+		          type:'post',
+		          url: url,
+		          processData: false,
+		          contentType: false,
+		          success: (data) => {
+		            var j=1;
+		            var html='';
+		            $.each(data,function(i,v){
+		            	
+		            	var image = JSON.parse(v.item_image)
+		            	var id = JSON.parse(v.i_id)
+		            	var url="{{route('product_detail',':id')}}";
+	      				url=url.replace(':id',id);
+		              html+=`<div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
+								<!-- Block2 -->
+								<div class="block2">
+									<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+										<img src="{{asset('${image[0]}')}}" alt="IMG-PRODUCT">
+
+										<div class="block2-overlay trans-0-4">
+											<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
+												<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+												<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+											</a>
+
+											<div class="block2-btn-addcart w-size1 trans-0-4">
+												<!-- Button -->
+												<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+													<a href="${url}" class="text-white">Show Detail</a>
+												</button>
+											</div>
+										</div>
+									</div>
+
+									<div class="block2-txt p-t-20">
+										<a href="{{route('product_detail',$item->id)}}" class="block2-name dis-block s-text3 p-b-5">
+											${v.item_name}
+										</a>
+
+										<span class="block2-price m-text6 p-r-5">
+											${v.item_price}
+											
+										</span>
+									</div>
+								</div>
+							</div>`;
+		            });
+		            $('#search_category').html(html);
+		          },
+		          error: function(error){
+		            console.log(error)
+		          }
+		      });  
+	    	}
+
+	    	$('.search').click(function (argument) {
+				var keyword = $('#search-product').val()
+				getItemsBySorting(keyword)
+			})
+			$('#search-product').keypress(function(event){
+		        var keycode = (event.keyCode ? event.keyCode : event.which);
+		        if(keycode == '13'){
+					var keyword = $('#search-product').val()
+					getItemsBySorting(keyword)
+			        }
+			    })
+		})
+	</script>
 @endsection

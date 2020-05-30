@@ -68,50 +68,54 @@
 	<div class="banner bgwhite p-t-40 p-b-40">
 		<div class="container">
 			<div class="row">
+				@foreach($filter_categories as $filter_category)
 				<div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
 					<!-- block1 -->
 					<div class="block1 hov-img-zoom pos-relative m-b-30">
-						<img src="{{asset('frontend_template/images/banner-05.jpg')}}" alt="IMG-BENNER" style="height: 300px">
+						@if($filter_category->category_name == "Outfits" || $filter_category->category_name == "Clothes")
+							<img src="{{asset('frontend_template/images/banner-05.jpg')}}" alt="IMG-BENNER" style="height: 350px">
+
+						@elseif($filter_category->category_name == "Footwear")
+							<img src="{{asset('frontend_template/images/banner-03.jpg')}}" alt="IMG-BENNER" style="height: 350px">
+
+						@elseif($filter_category->category_name == "Bags")
+							<img src="{{asset('frontend_template/images/banner-10.jpg')}}" alt="IMG-BENNER" style="height: 350px">
+
+						@endif
 
 						<div class="block1-wrapbtn w-size2">
 							<!-- Button -->
-							<a href="#" class="flex-c-m size2 m-text2 bg3 hov1 trans-0-4">
-								Outfits
+							<a href="javascript:void(0)" class="flex-c-m size2 m-text2 bg3 hov1 trans-0-4 filter-category" data-id="{{$filter_category->id}}">
+								{{$filter_category->category_name}}
 							</a>
 						</div>
 					</div>
 				</div>
+				@endforeach
+			</div>
+		</div>
+	</div>
+	<section class="bgwhite p-t-45 p-b-58 search_category d-none">
+		<div class="container">
+			<div class="sec-title p-b-22">
+				<h3 class="m-text5 t-center search_title">
+					Your Products
+				</h3>
+			</div>
 
-				<div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
-					<!-- block1 -->
-					<div class="block1 hov-img-zoom pos-relative m-b-30">
-						<img src="{{asset('frontend_template/images/banner-03.jpg')}}" alt="IMG-BENNER" style="height: 300px">
+			<!-- Tab01 -->
+			<div class="tab01">
+				<!-- Tab panes -->
+				<div class="tab-content">
 
-						<div class="block1-wrapbtn w-size2">
-							<!-- Button -->
-							<a href="#" class="flex-c-m size2 m-text2 bg3 hov1 trans-0-4">
-								Footwear
-							</a>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
-					<!-- block1 -->
-					<div class="block1 hov-img-zoom pos-relative m-b-30">
-						<img src="{{asset('frontend_template/images/banner-10.jpg')}}" alt="IMG-BENNER" style="height: 300px">
-
-						<div class="block1-wrapbtn w-size2">
-							<!-- Button -->
-							<a href="#" class="flex-c-m size2 m-text2 bg3 hov1 trans-0-4">
-								Bags
-							</a>
+					<div class="tab-pane fade show active" role="tabpanel">
+						<div class="row" id="search_category">
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 @endsection
 @section('product')
 	<section class="bgwhite p-t-45 p-b-58">
@@ -152,6 +156,7 @@
 												@php 
 													$item_images = json_decode($item->item_image);
 												@endphp
+
 												<img src="{{asset($item_images[0])}}" alt="IMG-PRODUCT">
 
 												<div class="block2-overlay trans-0-4">
@@ -163,7 +168,7 @@
 													<div class="block2-btn-addcart w-size1 trans-0-4">
 														<!-- Button -->
 														<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-															Add to Cart
+															<a href="{{route('product_detail',$item->id)}}" class="text-white">Show Detail</a>
 														</button>
 													</div>
 												</div>
@@ -207,7 +212,7 @@
 												<div class="block2-btn-addcart w-size1 trans-0-4">
 													<!-- Button -->
 													<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-														Add to Cart
+														<a href="{{route('product_detail',$item->id)}}" class="text-white">Show Detail</a>
 													</button>
 												</div>
 											</div>
@@ -244,10 +249,10 @@
 					Lookbook
 				</h3>
 
-				<span class="btn-play s-text4 hov5 cs-pointer p-t-25" data-toggle="modal" data-target="#modal-video-01">
+				{{-- <span class="btn-play s-text4 hov5 cs-pointer p-t-25" data-toggle="modal" data-target="#modal-video-01">
 					<i class="fa fa-play" aria-hidden="true"></i>
 					Play Video
-				</span>
+				</span> --}}
 			</div>
 		</div>
 	</section>
@@ -470,4 +475,80 @@
 			</div>
 		</div>
 	</section>
+@endsection
+@section('script')
+	<script type="text/javascript">
+		$(document).ready(function (argument) {
+			$.ajaxSetup({
+				headers:{
+					'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+				}
+			});
+
+			$('.filter-category').click(function (argument) {
+				var category_id = $(this).data('id')
+				getItemsByCategory(category_id)
+			})
+
+			function getItemsByCategory(category_id){
+			  console.log(category_id)
+		      var url="{{route('get_item_by_category',':id')}}";
+		      url=url.replace(':id',category_id);
+		        $.ajax({
+		          type:'post',
+		          url: url,
+		          processData: false,
+		          contentType: false,
+		          success: (data) => {
+		            var j=1;
+		            var html='';
+		            console.log(data)
+		            $.each(data,function(i,v){
+		            	var image = JSON.parse(v.item_image)
+		            	var id = JSON.parse(v.i_id)
+		            	var url="{{route('product_detail',':id')}}";
+	      				url=url.replace(':id',id);
+		              html+=`<div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
+									<div class="block2">
+										<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+											<img src="{{asset('${image[0]}')}}" alt="IMG-PRODUCT">
+
+											<div class="block2-overlay trans-0-4">
+												<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
+													<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+													<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+												</a>
+
+												<div class="block2-btn-addcart w-size1 trans-0-4">
+													<!-- Button -->
+													<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+														<a href="${url}" class="text-white">Show Detail</a>
+													</button>
+												</div>
+											</div>
+										</div>
+
+										<div class="block2-txt p-t-20">
+											<a href="{{route('product_detail',$item->id)}}" class="block2-name dis-block s-text3 p-b-5">
+												${v.item_name}
+											</a>
+
+											<span class="block2-price m-text6 p-r-5">
+												${v.item_price}
+											</span>
+										</div>
+									</div>
+								</div>`;
+		            });
+		            $(".search_title").text(data[0].category_name)
+		            $(".search_category").removeClass('d-none')
+		            $('#search_category').html(html);
+		          },
+		          error: function(error){
+		            console.log(error)
+		          }
+		      });  
+	    	}
+		})
+	</script>
 @endsection

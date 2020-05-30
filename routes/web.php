@@ -49,9 +49,18 @@ Route::get('/','FrontendController@index')->name('homepage');
 Route::get('product','FrontendController@product')->name('product');
 Route::get('product_detail/{id}','FrontendController@productDetail')->name('product_detail');
 
-Route::get('/cart','CartController@cart');
+Route::post('/get_item_by_category/{id}','FrontendController@getItemsByCategory')->name('get_item_by_category');
+
+Route::post('/get_item_by_sorting/{sort_type}','FrontendController@getItemsBySorting')->name('get_item_by_sorting');
+
+Route::get('/cart','CartController@cart')->name('cart');
 Route::post('/feebytownship','CartController@fee')->name('feebytownship');
 Route::post('/order','OrderController@store')->name('order');
+
+Route::get('about','FrontendController@about')->name('about');
+Route::get('contact','FrontendController@contact')->name('contact');
+
+
 
 Auth::routes();
 

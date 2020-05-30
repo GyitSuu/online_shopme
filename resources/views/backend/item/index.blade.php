@@ -240,7 +240,7 @@
 	            console.log(error)
 	          }
 	      });  
-    }
+    	}
 		function getItem(){
 			var url = "{{route('admin.get_item')}}";
 			$.ajax({
