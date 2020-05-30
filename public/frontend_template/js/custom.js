@@ -17,137 +17,126 @@ $(document).ready(function(){
 					qty:qty,
 					size:size
 				};
-			var itemString = localStorage.getItem("items");
-			var itemArray
-			if(itemString == null){
-					itemArray = Array();
-				}else{
-					itemArray = JSON.parse(itemString);
-				}
-				var status=false;
-				//var exit=false;
-				$.each(itemArray,function(i,v){
-					// alert(i);
-						if (id==v.id && size==v.size) {
-							status=true;
-							v.qty++;
-						}
-
-					})
-
-					if (!status) {
-						itemArray.push(item);
+		var itemString = localStorage.getItem("items");
+		var itemArray
+		if(itemString == null){
+				itemArray = Array();
+			}else{
+				itemArray = JSON.parse(itemString);
+			}
+			var status=false;
+			//var exit=false;
+			$.each(itemArray,function(i,v){
+				// alert(i);
+					if (id==v.id && size==v.size) {
+						status=true;
+						v.qty++;
 					}
-				
+			})
 
-				var itemData = JSON.stringify(itemArray);
-				localStorage.setItem("items",itemData);
-				count();
+			if (!status) {
+				itemArray.push(item);
+			}
+		var itemData = JSON.stringify(itemArray);
+		localStorage.setItem("items",itemData);
+		count();
 	})
 
 	$(".cartdrop").click(function(){
 		var itemString = localStorage.getItem("items");
-				if(itemString){
-					var itemArray = JSON.parse(itemString);
-				}
-				// console.log(itemArray);
-				var html =''; var html1=""; var total=0;
-				var bookingcart = 0;
+		if(itemString){
+			var itemArray = JSON.parse(itemString);
+		}
+		// console.log(itemArray);
+		var html =''; var html1=""; var total=0;
+		var bookingcart = 0;
 
-				$.each(itemArray,function(i,v){
-					var id = v.id;
-					var name = v.name;
-					var photo = v.photo;
-					var price =v.price;
-					var qty =v.qty;
+		$.each(itemArray,function(i,v){
+			var id = v.id;
+			var name = v.name;
+			var photo = v.photo;
+			var price =v.price;
+			var qty =v.qty;
 
-					var subtotal=qty*price;
-					total+=subtotal;
-					var photo_link = "http://enjoywithme.khaingthinkyi.me/" + photo
-					//console.log(photo);
+			var subtotal=qty*price;
+			total+=subtotal;
+			var photo_link = "http://localhost:8000/" + photo
+			html+=`<div class="header-cart-item-img">
+					<img src="${photo_link}">
+					</div>
 
-					
+					<div class="header-cart-item-txt">
+						<a href="#" class="header-cart-item-name">
+							${name}
+						</a>
 
-					html+=`<div class="header-cart-item-img">
-										<img src="${photo_link}">
-									</div>
+						<span class="header-cart-item-info">
+							${qty} x ${price}
+						</span>
 
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											${name}
-										</a>
+					</div>`
 
-										<span class="header-cart-item-info">
-											${qty} x ${price}
-										</span>
-
-									</div>
-					`
-
-				})
-				$(".cartli").html(html);
-				$(".carttotal").html(total);
+		})
+		$(".cartli").html(html);
+		$(".carttotal").html(total);
 	})
 	
 	function showmyitem(){
-				var itemString = localStorage.getItem("items");
-				if(itemString){
-					var itemArray = JSON.parse(itemString);
-				}
-				// console.log(itemArray);
-				var html =''; var j=1; var total=0;
-				var bookingcart = 0;
+		var itemString = localStorage.getItem("items");
+		if(itemString){
+			var itemArray = JSON.parse(itemString);
+		}
+		// console.log(itemArray);
+		var html =''; var j=1; var total=0;
+		var bookingcart = 0;
 
-				$.each(itemArray,function(i,v){
-					var id = v.id;
-					console.log(id);
-					var name = v.name;
-					var size=v.size
-					var photo = v.photo;
-					var price =v.price;
-					var qty =v.qty;
-					var qty =v.qty;
+		$.each(itemArray,function(i,v){
+			var id = v.id;
+			console.log(id);
+			var name = v.name;
+			var size=v.size
+			var photo = v.photo;
+			var price =v.price;
+			var qty =v.qty;
+			var qty =v.qty;
 
-					var subtotal=qty*price;
-					total+=subtotal;
-					 
+			var subtotal=qty*price;
+			total+=subtotal;
+			 
 
-					html+=`
-					<tr class="table-row carttr" >
-					<td class="column-1">
-								<div class="cart-img-product b-rad-4 o-f-hidden">
-									<img src="${photo}" alt="IMG-PRODUCT">
-								</div>
-							</td>
-							<td class="column-2">${name}</td>
-							<td class="column-3">${price}</td>
-							<td class="column-4">${size}</td>
+			html+=`
+			<tr class="table-row carttr" >
+			<td class="column-1">
+				<div class="cart-img-product b-rad-4 o-f-hidden" data-id="${i}">
+					<img src="${photo}" alt="IMG-PRODUCT">
+				</div>
+			</td>
+			<td class="column-2 product-name">${name}</td>
+			<td class="column-3">${price}</td>
 
-							<td class="column-5">
-								<div class="flex-w bo5 of-hidden w-size17">
-									<button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2 btndecrease" data-id="${i}" data-size="${size}">
-										<i class="fs-12 fa fa-minus" aria-hidden="true"  ></i>
-									</button>
+			<td class="column-5">
+				<div class="flex-w bo5 of-hidden w-size17">
+					<button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2 btndecrease" data-id="${i}" data-size="${size}">
+						<i class="fs-12 fa fa-minus" aria-hidden="true"  ></i>
+					</button>
 
-									<input class="size8 m-text18 t-center num-product quantity" type="number" name="num-product1" value="${qty}">
+					<input class="size8 m-text18 t-center num-product quantity" type="number" name="num-product1" value="${qty}">
 
-									<button class="btn-num-product-up color1 flex-c-m size7 bg8 eff2 btnincrease" data-id="${i}" data-size="${size}">
-										<i class="fs-12 fa fa-plus" aria-hidden="true"></i>
-									</button>
-								</div>
-							</td>
-							<td class="column-6">${subtotal}</td>
-							</tr>
-					`
-				})
-					//console.log(total);
-				$(".tbody").html(html);
-				$(".carttotal").html(total);
-				
-			}
-			count();
-	function count()
-      {
+					<button class="btn-num-product-up color1 flex-c-m size7 bg8 eff2 btnincrease" data-id="${i}" data-size="${size}">
+						<i class="fs-12 fa fa-plus" aria-hidden="true"></i>
+					</button>
+				</div>
+			</td>
+			<td class="column-6">${subtotal}</td>
+			</tr>`
+		})
+			//console.log(total);
+		$(".tbody").html(html);
+		$(".carttotal").html(total);
+		
+	}
+	count();
+	function count() {
         var total = 0;
         var itemString = localStorage.getItem("items");
 		if(itemString){
@@ -162,51 +151,66 @@ $(document).ready(function(){
     }
 
    $('tbody').on('click','.btnincrease',function () {
-   	
-				var id = $(this).data('id');
-				var size=$(this).data('size');
-				console.log(id);
-				var itemString = localStorage.getItem('items');
-				if(itemString){
-					var itemArray = JSON.parse(itemString);
-					
-					$.each(itemArray,function (i,v) {
-						if (i== id  && size==v.size) {
-							v.qty++;
-						}
-					})
-					cart = JSON.stringify(itemArray);
-					localStorage.setItem('items',cart);
-					showmyitem();
-					count();
+		var id = $(this).data('id');
+		var size=$(this).data('size');
+		console.log(id);
+		var itemString = localStorage.getItem('items');
+		if(itemString){
+			var itemArray = JSON.parse(itemString);
+			
+			$.each(itemArray,function (i,v) {
+				if (i== id  && size==v.size) {
+					v.qty++;
 				}
-				
 			})
+			cart = JSON.stringify(itemArray);
+			localStorage.setItem('items',cart);
+			showmyitem();
+			count();
+		}
+		
+	})
     $(".tbody").on('click','.btndecrease',function(){
     	var id = $(this).data('id');
 		var size=$(this).data('size');
-				console.log(id);
-				var itemString = localStorage.getItem('items');
-				if(itemString){
-					var itemArray = JSON.parse(itemString);
-					
-					$.each(itemArray,function (i,v) {
-						if (i == id  && size==v.size) {
-							//alert("ok");
-							v.qty--;
-							if(v.qty==0){
-								//alert("ok");
-								itemArray.splice(id,1);
-							}
-						}
-					})
-					cart = JSON.stringify(itemArray);
-					localStorage.setItem('items',cart);
-					showmyitem();
-					count()
+		console.log(id);
+		var itemString = localStorage.getItem('items');
+		if(itemString){
+			var itemArray = JSON.parse(itemString);
+			
+			$.each(itemArray,function (i,v) {
+				if (i == id  && size==v.size) {
+					//alert("ok");
+					v.qty--;
+					if(v.qty==0){
+						//alert("ok");
+						itemArray.splice(id,1);
+					}
 				}
 			})
-
-
-    
+			cart = JSON.stringify(itemArray);
+			localStorage.setItem('items',cart);
+			showmyitem();
+			count()
+		}
+	})
+   	$(".tbody").on('click','.cart-img-product',function(){
+   		alert('hi')
+    	var id = $(this).data('id');
+		console.log(id);
+		var itemString = localStorage.getItem('items');
+		if(itemString){
+			var itemArray = JSON.parse(itemString);
+			
+			$.each(itemArray,function (i,v) {
+				if (i == id) {
+					itemArray.splice(id,1);
+				}
+			})
+			cart = JSON.stringify(itemArray);
+			localStorage.setItem('items',cart);
+			showmyitem();
+			count()
+		}
+	})
 })

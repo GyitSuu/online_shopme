@@ -3,7 +3,7 @@
 	
 	<!-- breadcrumb -->
 	<div class="bread-crumb bgwhite flex-w p-l-52 p-r-15 p-t-30 p-l-15-sm">
-		<a href="index.html" class="s-text16">
+		<a href="{{route('homepage')}}" class="s-text16">
 			Home
 			<i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
 		</a>
@@ -66,7 +66,7 @@
 							<select class="selection-2 size" name="size">
 								
 								@foreach($item->sizes as $size)
-								<option value="$size->pivot->size_id">{{$size->size}}</option>
+								<option value="{{$size->pivot->size_id}}">{{$size->size}}</option>
 
 								@endforeach
 							</select>
@@ -82,7 +82,7 @@
 							<select class="selection-2" name="color">
 								<option>Choose an option</option>
 								@foreach($item->colors as $color)
-								<option value="$color->pivot->color_id">{{$color->color}}</option>
+								<option value="{{$color->pivot->color_id}}">{{$color->color}}</option>
 
 								@endforeach
 							</select>
@@ -112,6 +112,7 @@
 									Add to Cart
 								</button>
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -166,6 +167,7 @@
 				</div> --}}
 			</div>
 		</div>
+
 	</div>
 
 

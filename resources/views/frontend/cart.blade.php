@@ -18,7 +18,6 @@
 							<th class="column-1"></th>
 							<th class="column-2">Product</th>
 							<th class="column-3">Price</th>
-							<th class="column-3">Size</th>
 
 							<th class="column-4 p-l-70">Quantity</th>
 							<th class="column-5">Total</th>
@@ -82,6 +81,8 @@
 						<p class="s-text8 p-b-23">
 							There are shipping methods available in Mandalay Region. Please double check your address, or contact us if you need any help.
 						</p>
+					</div>
+				</div>
 
 						<span class="s-text19">
 							Calculate Shipping
@@ -95,7 +96,7 @@
 								@endforeach
 							</select>
 						</div>
-						<h5 class="text-success delifee m-2"></h5>
+						<h6 class="text-success delifee m-2 s-text9"></h6>
 
 						
 						<textarea class="dis-block s-text7 size20 bo4 p-l-22 p-r-22 p-t-13 m-b-20 address" name="address" placeholder="Address"></textarea>
@@ -110,8 +111,7 @@
 								Update Totals
 							</button>
 						</div> --}}
-					</div>
-				</div>
+					
 
 				<!--  -->
 				<div class="flex-w flex-sb-m p-t-26 p-b-30">
@@ -158,44 +158,72 @@
 	@endsection
 	@section('script')
 
-	<script type="text/javascript">
-		$(document).ready(function(){
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $(".township").change(function(){
+      //alert("ok");
+        var tid=$(this).val();
+        //console.log(tid);
 
-			$(".checkout").click(function(){
-				var authCheck = {{ Auth::check() }}
-				console.log(authCheck)
-				if (authCheck) {
-					var yes=confirm("Are you sure to order");
-					if(yes){
-					var orderdate=$(".orderdate").val();
-					var total=parseInt($(".alltotal").html());
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-					var itemString = localStorage.getItem('items');
-					var itemArray = JSON.parse(itemString);
+        $.post("/feebytownship",{tid:tid},function(res){
+          //console.log(res);
+          var defee="";
+          $.each(res,function(i,v){
+             defee=v.fee;
+            //console.log(defee);
 
-					$.ajaxSetup({
-					    headers: {
-					        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					    }
-					});
+          })
+          $(".delifee").html("Delivery fee is "+defee);
 
-					$.post("/order",{address:address,orderdate:orderdate,total:total,itemArray:itemArray},function(res){
-						console.log(res.success);
-						if(res){
-							alert(res.success)
-							localStorage.clear();
-							window.location = "{{route('product')}}";
-						}
-					})
+          var total=$(".carttotal").html();
+          var alltotal=parseInt(defee)+parseInt(total);
 
-					}
-				}
-				else{
-					$(".authModal").modal('show')
-					
-				}
-				
-			})
-		})
-	</script>
-	@endsection
+          $(".alltotal").html(alltotal);
+
+        })
+      })
+
+      $(".checkout").click(function(){
+        var authCheck = {{ Auth::check() }}
+        console.log(authCheck)
+        if (authCheck) {
+          var yes=confirm("Are you sure to order");
+          if(yes){
+          var total=parseInt($(".subtotal").html());
+
+          var itemString = localStorage.getItem('items');
+          var itemArray = JSON.parse(itemString);
+
+          $.ajaxSetup({
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          });
+
+          $.post("/order",{total:total,itemArray:itemArray},function(res){
+            console.log(res.success);
+            if(res){
+              alert(res.success)
+              localStorage.clear();
+              window.location = "{{route('product')}}";
+            }
+          })
+
+          }
+        }
+        else{
+          $(".authModal").modal('show')
+          
+        }
+        
+      })
+    })
+  </script>
+  @endsection
+	

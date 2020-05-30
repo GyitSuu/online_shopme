@@ -64,14 +64,14 @@ class FrontendController extends Controller
             $items = DB::table('items')
                 ->join('categories', 'categories.id', '=', 'items.category_id')
                 ->select('items.*', 'categories.*', 'items.id as i_id')
-                ->orderBy('items.item_price', 'asc')
+                ->orderBy('items.item_price', 'desc')
                 ->get();
         }
         elseif($sort_type == "highToLow") {
             $items = DB::table('items')
                 ->join('categories', 'categories.id', '=', 'items.category_id')
                 ->select('items.*', 'categories.*', 'items.id as i_id')
-                ->orderBy('items.item_price', 'desc')
+                ->orderBy('items.item_price', 'asc')
                 ->get();
         }else {
             $items = DB::table('items')
