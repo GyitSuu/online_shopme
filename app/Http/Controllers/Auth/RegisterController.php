@@ -66,7 +66,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        if ($data['image']) 
+        if (isset($data['image'])) 
         {
             $image=$data['image'];
             $upload_path=public_path().'image/profile/';

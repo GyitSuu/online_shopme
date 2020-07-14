@@ -4,11 +4,17 @@ $(document).ready(function(){
 		var id = $(this).data('id');
 		var name = $(this).data('name');
 		var price = $(this).data('price');
-		var photo = $(this).data('photo');
+		var photo_raw = $(".slick-active").children().attr('src');
+		var photo = photo_raw.replace(" http://127.0.0.1:8000/","");
 		var qty=$('.qty').val();
 		var size=$('.size').val();
 
-		//console.log(id+name+price+photo+qty);
+		if (!size) {
+			var size = null;
+			console.log(size)
+		}
+
+		console.log(id+name+price+photo+qty+size);
 		var item = {
 					id:id,
 					name:name,
@@ -28,7 +34,7 @@ $(document).ready(function(){
 			//var exit=false;
 			$.each(itemArray,function(i,v){
 				// alert(i);
-					if (id==v.id && size==v.size) {
+					if (id==v.id && size==v.size && photo == v.photo) {
 						status=true;
 						v.qty++;
 					}
@@ -37,6 +43,7 @@ $(document).ready(function(){
 			if (!status) {
 				itemArray.push(item);
 			}
+
 		var itemData = JSON.stringify(itemArray);
 		localStorage.setItem("items",itemData);
 		count();

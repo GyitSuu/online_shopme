@@ -106,13 +106,12 @@
                   </div>
                   <!-- Card Body -->
                   <div class="card-body">
-                    @php 
-                      $item_images = json_decode($order_detail->item->item_image);
-                    @endphp
-                    <img src="{{asset($item_images[0])}}" class="img-fluid">
+                    <img src="{{asset($order_detail->image)}}" class="img-fluid">
                     <div class="mt-4 text-center small">
                       <span class="mr-2">
-                        <i class="fas fa-circle text-primary"></i> Size - {{$order_detail->size_id}} 
+                        <i class="fas fa-circle text-primary"></i> Size - <?php if ($order_detail->size_id) { ?>
+                          {{$order_detail->size->size}} 
+                        <?php } else echo 'Free'; ?>
                       </span>
                       <span class="mr-2">
                         <i class="fas fa-circle text-success"></i> Qty -  {{$order_detail->qty}}

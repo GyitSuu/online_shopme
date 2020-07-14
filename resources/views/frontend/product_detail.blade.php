@@ -57,23 +57,30 @@
 
 				<!--  -->
 				<div class="p-t-33 p-b-60">
+					<?php 
+						$size = count($item->sizes);
+						if ($size > 0) { ?>
 					<div class="flex-m flex-w p-b-10">
 						<div class="s-text15 w-size15 t-center">
 							Size
 						</div>
 
 						<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
-							<select class="selection-2 size" name="size">
-								
-								@foreach($item->sizes as $size)
+						<select class="selection-2 size" name="size">
+								<option>Choose an option</option>		@foreach($item->sizes as $size)
 								<option value="{{$size->pivot->size_id}}">{{$size->size}}</option>
 
-								@endforeach
+							@endforeach
 							</select>
 						</div>
 					</div>
-
-					<div class="flex-m flex-w">
+					<?php
+						}
+					?>
+					<?php 
+						$color = count($item->colors);
+						if ($color > 0) { ?>
+					{{-- <div class="flex-m flex-w">
 						<div class="s-text15 w-size15 t-center">
 							Color
 						</div>
@@ -87,7 +94,10 @@
 								@endforeach
 							</select>
 						</div>
-					</div>
+					</div> --}}
+					<?php
+						}
+					?>
 
 					<div class="flex-r-m flex-w p-t-10">
 						<div class="w-size16 flex-m flex-w">
@@ -227,7 +237,7 @@
 						<!-- Block2 -->
 						<div class="block2">
 							<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
-								<img src="{{asset('${image[0]}')}}" alt="IMG-PRODUCT" style="width:300px; height:350px">
+								<img src="{{asset('${image[0]}')}}" alt="IMG-PRODUCT" style="width:277px; height:320px">
 
 								<div class="block2-overlay trans-0-4">
 									<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">

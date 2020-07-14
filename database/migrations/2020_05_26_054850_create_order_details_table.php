@@ -20,6 +20,7 @@ class CreateOrderDetailsTable extends Migration
             $table->unsignedBigInteger('qty');
             $table->string('subtotal', 20);
             $table->string('size_id')->nullable();
+            $table->string('image', 100);
             $table->timestamps();
         });
     }

@@ -8,7 +8,7 @@ class OrderDetail extends Model
 {
     //
     protected $fillable = [
-        'item_id', 'voucher_no', 'qty', 'subtotal', 'size_id'
+        'item_id', 'voucher_no', 'qty', 'subtotal', 'size_id', 'image'
     ];
     public function orders()
     {

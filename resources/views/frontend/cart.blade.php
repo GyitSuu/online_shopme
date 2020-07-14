@@ -90,20 +90,23 @@
 
 						<div class="rs2-select2 rs3-select2 rs4-select2 bo4 of-hidden w-size21 m-t-8 m-b-12">
 							<select class="selection-2 township" name="township" >
-								<option>Select a Township...</option>
+								<option value="null">Select a Township...</option>
 								@foreach($townships as $row)
 								<option value="{{$row->id}}">{{$row->township}}</option>
 								@endforeach
 							</select>
+
 						</div>
+						<p class="township-text text-danger"></p>
 						<h6 class="text-success delifee m-2 s-text9"></h6>
 
 						
 						<textarea class="dis-block s-text7 size20 bo4 p-l-22 p-r-22 p-t-13 m-b-20 address" name="address" placeholder="Address"></textarea>
+						<p class="address-text text-danger"></p>
 
-						<div class="bo4 of-hidden w-size21 m-t-8 m-b-12 m-b-22 my-4">
+						{{-- <div class="bo4 of-hidden w-size21 m-t-8 m-b-12 m-b-22 my-4">
 							<input type="date" name="" placeholder="date" class="form-control orderdate s-text7">
-						</div>
+						</div> --}}
 
 						{{-- <div class="size14 trans-0-4 m-b-10">
 							<!-- Button -->
@@ -190,12 +193,21 @@
       })
 
       $(".checkout").click(function(){
+      	
         var authCheck = {{ Auth::check() }}
         console.log(authCheck)
         if (authCheck) {
           var yes=confirm("Are you sure to order");
           if(yes){
-          var total=parseInt($(".subtotal").html());
+          var total=parseInt($(".alltotal").html());
+          var address = $(".address").val();
+          if (address.length < 5) {
+          	$(".address-text").html("Please fill detail address");
+          }
+          var township = $('.township').val()
+	      	if (township == 'null') {
+	      		$(".township-text").html("Please seclect township to deliver itmes ");
+	      	}
 
           var itemString = localStorage.getItem('items');
           var itemArray = JSON.parse(itemString);
@@ -205,9 +217,10 @@
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
               }
           });
+          console.log(total)
 
-          $.post("/order",{total:total,itemArray:itemArray},function(res){
-            console.log(res.success);
+          $.post("/order",{address:address,total:total,itemArray:itemArray},function(res){
+            console.log(res);
             if(res){
               alert(res.success)
               localStorage.clear();

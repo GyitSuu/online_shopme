@@ -92,9 +92,9 @@
 								<a href="{{route('cart')}}">Features</a>
 							</li>
 
-							<li>
+							{{-- <li>
 								<a href="blog.html">Blog</a>
-							</li>
+							</li> --}}
 
 							<li>
 								<a href="{{route('about')}}">About</a>
