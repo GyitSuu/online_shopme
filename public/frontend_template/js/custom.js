@@ -99,7 +99,6 @@ $(document).ready(function(){
 
 		$.each(itemArray,function(i,v){
 			var id = v.id;
-			console.log(id);
 			var name = v.name;
 			var size=v.size
 			var photo = v.photo;
@@ -160,7 +159,6 @@ $(document).ready(function(){
    $('tbody').on('click','.btnincrease',function () {
 		var id = $(this).data('id');
 		var size=$(this).data('size');
-		console.log(id);
 		var itemString = localStorage.getItem('items');
 		if(itemString){
 			var itemArray = JSON.parse(itemString);
@@ -204,7 +202,6 @@ $(document).ready(function(){
    	$(".tbody").on('click','.cart-img-product',function(){
    		alert('hi')
     	var id = $(this).data('id');
-		console.log(id);
 		var itemString = localStorage.getItem('items');
 		if(itemString){
 			var itemArray = JSON.parse(itemString);

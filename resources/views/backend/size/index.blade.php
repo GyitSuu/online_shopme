@@ -6,7 +6,7 @@
           	<header> 
 	            <h1 class="h3 display">Tables 
 	            <button  class="btn btn-primary float-right" data-toggle="modal"  id="createNewSize">
-	       		 	<i class="fa fa-plus"></i> Add Category</button></h1>
+	       		 	<i class="fa fa-plus"></i> Add Size</button></h1>
 			</header>
 			<div class="row">
 			  <div class="col-12">
@@ -216,7 +216,7 @@
         $('#saveBtn').text("Save");
         /*$('#transportation_id').val('');*/
         document.getElementById("sizeForm").reset()
-        $('#modelHeading').html("Create New Post");
+        $('#modelHeading').html("Create New Size");
         $('#sizeModal').modal('show');
     });   
     $('#sizeForm').submit(function (e) {
@@ -271,7 +271,7 @@
           dataType: 'json',
           success: function (data) {
           	console.log(data);
-              $('#edit_modelHeading').html("Edit Size");
+              $('#edit_modelHeading').html("Edit Existing Size");
               $('#editSaveBtn').text("Update");
               $('#editSizeModal').modal('show');
               getEditCategory();
@@ -331,7 +331,7 @@
    $('body').on('click', '.deleteSize', function () {
         clearInterval()
         var size_id = $(this).data('id');
-        var status = confirm("Are You sure want to delete !");
+        var status = confirm("Are You sure want to delete this size!");
         if (status) {
           var url="{{route('admin.size.destroy',':id')}}";
           url=url.replace(':id',size_id);

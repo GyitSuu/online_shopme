@@ -194,7 +194,7 @@
 
       $(".checkout").click(function(){
       	
-        var authCheck = {{ Auth::check() }}
+        var authCheck = "{{ Auth::check() }}"
         console.log(authCheck)
         if (authCheck) {
           var yes=confirm("Are you sure to order");

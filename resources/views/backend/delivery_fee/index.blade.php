@@ -216,7 +216,7 @@
         $('#saveBtn').text("Save");
         /*$('#transportation_id').val('');*/
         document.getElementById("feeForm").reset()
-        $('#modelHeading').html("Create New Post");
+        $('#modelHeading').html("Create New Delivery Fee");
         $('#feeModal').modal('show');
     });   
     $('#feeForm').submit(function (e) {
@@ -271,7 +271,7 @@
           dataType: 'json',
           success: function (data) {
           	console.log(data);
-              $('#edit_modelHeading').html("Edit Fee");
+              $('#edit_modelHeading').html("Edit Existing Delivery Fee");
               $('#editSaveBtn').text("Update");
               $('#editFeeModal').modal('show');
               getEditTownship();
@@ -331,7 +331,7 @@
    $('body').on('click', '.deleteFee', function () {
         clearInterval()
         var fee_id = $(this).data('id');
-        var status = confirm("Are You sure want to delete !");
+        var status = confirm("Are You sure want to delete this fee!");
         if (status) {
           var url="{{route('admin.delivery_fee.destroy',':id')}}";
           url=url.replace(':id',fee_id);

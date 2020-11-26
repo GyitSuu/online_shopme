@@ -168,7 +168,7 @@
 				dataType: "json",
 				success : function(response) {
 					data = response.category;
-					$('#modelHeading').html('Edit Type');
+					$('#modelHeading').html('Edit Existing Category');
 					$('#saveBtn').val("edit-user");
 					$('#saveBtn').text('Update');
 					$('#categoryModal').modal('show');
@@ -186,7 +186,7 @@
 		$('tbody').on('click','.deleteCategory',function(){
 			clearInterval();
 			var category_id = $(this).data('id');
-			var status = confirm("Are your to delte category");
+			var status = confirm("Are your sure want to delete this category!");
 			if(status){
 				var url = "{{route('admin.category.destroy',':id')}}";
 				url = url.replace(':id',category_id);

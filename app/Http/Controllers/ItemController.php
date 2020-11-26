@@ -42,17 +42,17 @@ class ItemController extends Controller
             "item_name" => "required|min:3|max:150",
             "item_price" => "required|min:1|max:20",
             "category" => "required",
-             "description" => "required|min:4|max:255" 
+            "description" => "required|min:4|max:255" 
         ]);
         $image = $request->file('item_image');
-            if($image){
-                foreach ($image as $image_item) {
-                    $name=uniqid().time().'.'.$image_item->getClientOriginalExtension();
-                    $image_item->move(public_path('image/item'),$name);
-                    $path='image/item/'.$name;
-                    $image_array[]=$path;
-                }
+        if($image){
+            foreach ($image as $image_item) {
+                $name=uniqid().time().'.'.$image_item->getClientOriginalExtension();
+                $image_item->move(public_path('image/item'),$name);
+                $path='image/item/'.$name;
+                $image_array[]=$path;
             }
+        }
         // dd($request);
         if ($request->discount_price) {
             $discount_price = $request->discount_price;
@@ -70,8 +70,6 @@ class ItemController extends Controller
             'discount_price'=> $discount_price,
             'item_image'=> json_encode($image_array),
             'description'=> $request->description,
-
-
         ]);
          if ($request->size_id) {
             $item->sizes()->attach($request->size_id);
@@ -202,3 +200,5 @@ class ItemController extends Controller
     }
     
 }
+
+

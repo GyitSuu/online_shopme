@@ -69,7 +69,7 @@ class RegisterController extends Controller
         if (isset($data['image'])) 
         {
             $image=$data['image'];
-            $upload_path=public_path().'image/profile/';
+            $upload_path=public_path().'/image/profile/';
             $name=uniqid().time().'.'.$image->getClientOriginalExtension();
             $image->move($upload_path,$name);
             $path='image/profile/'.$name;

@@ -177,7 +177,7 @@
 				dataType: "json",
 				success : function(response) {
 					data = response.township;
-					$('#modelHeading').html('Edit Type');
+					$('#modelHeading').html('Edit Existing Township');
 					$('#saveBtn').val("edit-user");
 					$('#saveBtn').text('Update');
 					$('#townshipModal').modal('show');
@@ -195,7 +195,7 @@
 		$('tbody').on('click','.deleteTownship',function(){
 			clearInterval();
 			var township_id = $(this).data('id');
-			var status = confirm("Are your to delte township");
+			var status = confirm("Are your sure want to delete township");
 			if(status){
 				var url = "{{route('admin.township.destroy',':id')}}";
 				url = url.replace(':id',township_id);

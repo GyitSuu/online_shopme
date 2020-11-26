@@ -342,7 +342,7 @@
 	            console.log(error)
 	          }
 	      });  
-    	}
+    }
 		function getItem(){
 			var url = "{{route('admin.get_item')}}";
 			$.ajax({
@@ -383,7 +383,7 @@
 			$('#saveBtn').val('create-type');
 			$('#item_id').val('');
 			$('#itemForm').trigger("reset");
-			$('#modelHeading').html("Create New Brand");
+			$('#modelHeading').html("Create New Item");
 			$('#itemModal').modal('show')
 		});
 
@@ -463,7 +463,7 @@
             $(".item_old_image").html(html);
 
             //console.log(brands);
-              $('#edit_modelHeading').html("Edit Item");
+              $('#edit_modelHeading').html("Edit Existing Item");
               $('#editSaveBtn').text("Update");
               $('#editItemModal').modal('show');
             	$(".edit_sc").show();
@@ -541,7 +541,7 @@
   	  $('body').on('click', '.deleteItem', function () {
         clearInterval()
         var item_id = $(this).data("id");
-        var status = confirm("Are You sure want to delete !");
+        var status = confirm("Are You sure want to delete this item!");
         if (status) {
           var url="{{route('admin.item.destroy',':id')}}";
           url=url.replace(':id',item_id);

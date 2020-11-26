@@ -19,6 +19,7 @@
 
   <!-- Custom styles for this template-->
   <link href="{{asset('backend_template/css/sb-admin-2.min.css')}}" rel="stylesheet">
+  <link href="{{asset('backend_template/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
 </head>
 
@@ -369,6 +370,9 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{{asset('backend_template/js/sb-admin-2.min.js')}}"></script>
+  <script src="{{asset('backend_template/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+
+  <script src="{{asset('backend_template/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
   <!-- Page level plugins -->
   <script src="{{asset('backend_template/vendor/chart.js/Chart.min.js')}}"></script>
@@ -376,6 +380,11 @@
   <!-- Page level custom scripts -->
   <script src="{{asset('backend_template/js/demo/chart-area-demo.js')}}"></script>
   <script src="{{asset('backend_template/js/demo/chart-pie-demo.js')}}"></script>
+  <script type="text/javascript">
+      $(document).ready( function () {
+      $('#dataTable').DataTable();
+  } );
+</script>
   @yield('script')
 
 </body>

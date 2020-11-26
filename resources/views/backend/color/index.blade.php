@@ -216,7 +216,7 @@
         $('#saveBtn').text("Save");
         /*$('#transportation_id').val('');*/
         document.getElementById("colorForm").reset()
-        $('#modelHeading').html("Create New Post");
+        $('#modelHeading').html("Create New Color");
         $('#colorModal').modal('show');
     });   
     $('#colorForm').submit(function (e) {
@@ -271,7 +271,7 @@
           dataType: 'json',
           success: function (data) {
           	console.log(data);
-              $('#edit_modelHeading').html("Edit Color");
+              $('#edit_modelHeading').html("Edit Existing Color");
               $('#editSaveBtn').text("Update");
               $('#editColorModal').modal('show');
               getEditCategory();
@@ -331,7 +331,7 @@
    $('body').on('click', '.deleteColor', function () {
         clearInterval()
         var color_id = $(this).data('id');
-        var status = confirm("Are You sure want to delete !");
+        var status = confirm("Are You sure want to delete this color!");
         if (status) {
           var url="{{route('admin.color.destroy',':id')}}";
           url=url.replace(':id',color_id);
